@@ -36,14 +36,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Swipe label
     @IBOutlet weak var swipeLabel: UILabel!
     
-    
-    // Button variable to allow picker controller to know which picture to activate
-    var addButton1 = false
-    var addButton2 = false
-    var addButton3 = false
-    var addButton4 = false
-    var addButton5 = false
-    var addButton6 = false
+    // Used as parameter in the imagePickerView(), is equal to parameter from getImage method
+    var picturePicker: UIImageView!
     
     // View did load
     override func viewDidLoad() {
@@ -78,93 +72,77 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     // Add pictures button
     @IBAction func addPicture1Button(_ sender: Any) {
-        addButton1 = true
-        addPicture()
+        getSource(pictureAddPicture: picture1)
     }
     
     @IBAction func addPicture2Button(_ sender: Any) {
-        addButton2 = true
-        addPicture()
+        getSource(pictureAddPicture: picture2)
     }
     
     @IBAction func addPicture3Button(_ sender: Any) {
-        addButton3 = true
-        addPicture()
+        getSource(pictureAddPicture: picture3)
     }
     
     @IBAction func addPicture4Button(_ sender: Any) {
-        addButton4 = true
-        addPicture()
+        getSource(pictureAddPicture: picture4)
     }
     
     @IBAction func addPicture5Button(_ sender: Any) {
-        addButton5 = true
-        addPicture()
+        getSource(pictureAddPicture: picture5)
     }
     
     @IBAction func addPicture6Button(_ sender: Any) {
-        addButton6 = true
-        addPicture()
+        getSource(pictureAddPicture: picture6)
     }
     
     // Layout functions
     private func activateLayout(layoutselected: UIImageView!, buttonPictureA: UIButton!, buttonPictureB: UIButton!, buttonPictureC: UIButton!, buttonPictureD: UIButton!, pictureA: UIImageView!, pictureB: UIImageView!, pictureC: UIImageView!, pictureD: UIImageView!) {
         // Layout selector
-        layout1selected.isHidden = true
-        layout2selected.isHidden = true
-        layout3selected.isHidden = true
+        hideLayoutSelector()
         layoutselected.isHidden = false
         
         // Add pictures button
-        buttonPicture1.isHidden = true
-        buttonPicture2.isHidden = true
-        buttonPicture3.isHidden = true
-        buttonPicture4.isHidden = true
-        buttonPicture5.isHidden = true
-        buttonPicture6.isHidden = true
+        hidePictureButton()
         buttonPictureA.isHidden = false
         buttonPictureB.isHidden = false
         buttonPictureC.isHidden = false
         buttonPictureD.isHidden = false
         
         // Show only pictures from this specific layout
-        picture1.isHidden = true
-        picture2.isHidden = true
-        picture3.isHidden = true
-        picture4.isHidden = true
-        picture5.isHidden = true
-        picture6.isHidden = true
+        hideAllPictures()
         pictureA.isHidden = false
         pictureB.isHidden = false
         pictureC.isHidden = false
         pictureD.isHidden = false
     }
     
-    // Methods to add the picture
-    private func addPicture() {
+    // Methods to show an alert to the user to choose between camera and library
+    private func getSource(pictureAddPicture: UIImageView!) {
         
         // Create an alert to give choice between camera and photo library
         let alert = UIAlertController(title: "Image Selection", message: "From where you want to pick this picture?", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: {(action: UIAlertAction) in
-            self.getImage(fromSourceType: .camera)
+            self.getImage(pictureGetImage: pictureAddPicture, fromSourceType: .camera)
         }))
         alert.addAction(UIAlertAction(title: "Photo Album", style: .default, handler: {(action: UIAlertAction) in
-            self.getImage(fromSourceType: .photoLibrary)
+            self.getImage(pictureGetImage: pictureAddPicture, fromSourceType: .photoLibrary)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
         self.present(alert, animated: true, completion: nil)
+        print("addPicture")
     }
     
     //Get image from source type according method addPicture()
-    private func getImage(fromSourceType sourceType: UIImagePickerController.SourceType) {
+    private func getImage(pictureGetImage: UIImageView!, fromSourceType sourceType: UIImagePickerController.SourceType) {
         //Check is source type available
         if UIImagePickerController.isSourceTypeAvailable(sourceType) {
-            
             let image = UIImagePickerController()
             image.delegate = self
             image.sourceType = sourceType
             image.allowsEditing = true
+            picturePicker = pictureGetImage
             self.present(image, animated: true, completion: nil)
+            print("getImage")
         }
     }
     
@@ -172,40 +150,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            // Define which picture to show and to assign the image
-            if addButton1 == true {
-                picture1.isHidden = false
-                picture1.image = image
-            } else if addButton2 == true {
-                picture2.isHidden = false
-                picture2.image = image
-            } else if addButton3 == true {
-                picture3.isHidden = false
-                picture3.image = image
-            } else if addButton4 == true {
-                picture4.isHidden = false
-                picture4.image = image
-            } else if addButton5 == true {
-                picture5.isHidden = false
-                picture5.image = image
-            } else if addButton6 == true {
-                picture6.isHidden = false
-                picture6.image = image
-            }
-            
-            // Re-initialize the button booleans
-            addButton1 = false
-            addButton2 = false
-            addButton3 = false
-            addButton4 = false
-            addButton5 = false
-            addButton6 = false
-            
+            picturePicker.isHidden = false
+            picturePicker.image = image
         } else {
-            //To do: display error message
+            showAlert(title: "Error", message: "Instagrid could not access the camera nor the photo library")
         }
         
         self.dismiss(animated: true, completion: nil)
+        print("imagePickerController")
     }
     
     // Swipe method
@@ -233,6 +185,43 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         present(activityViewController, animated: true, completion: nil)
     }
     
+    // Method to show an alert (used if error occured when selecting a picture)
+    private func showAlert ( title:String, message:String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        
+        alert.addAction(alertAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    // Method to hide all layout selectors
+    private func hideLayoutSelector() {
+        layout1selected.isHidden = true
+        layout2selected.isHidden = true
+        layout3selected.isHidden = true
+    }
+    
+    // Method to hide all picture buttons
+    private func hidePictureButton() {
+        buttonPicture1.isHidden = true
+        buttonPicture2.isHidden = true
+        buttonPicture3.isHidden = true
+        buttonPicture4.isHidden = true
+        buttonPicture5.isHidden = true
+        buttonPicture6.isHidden = true
+    }
+    
+    // Method to hide all picture
+    private func hideAllPictures() {
+        picture1.isHidden = true
+        picture2.isHidden = true
+        picture3.isHidden = true
+        picture4.isHidden = true
+        picture5.isHidden = true
+        picture6.isHidden = true
+    }
     
     // Change swip label according phone orientation
     override func willAnimateRotation(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
