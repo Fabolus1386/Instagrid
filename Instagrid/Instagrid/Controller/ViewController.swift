@@ -96,7 +96,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Layout functions
-    private func activateLayout(layoutselected: UIImageView!, buttonPictureA: UIButton!, buttonPictureB: UIButton!, buttonPictureC: UIButton!, buttonPictureD: UIButton!, pictureA: UIImageView!, pictureB: UIImageView!, pictureC: UIImageView!, pictureD: UIImageView!) {
+    func activateLayout(layoutselected: UIImageView!, buttonPictureA: UIButton!, buttonPictureB: UIButton!, buttonPictureC: UIButton!, buttonPictureD: UIButton!, pictureA: UIImageView!, pictureB: UIImageView!, pictureC: UIImageView!, pictureD: UIImageView!) {
         // Layout selector
         hideLayoutSelector()
         layoutselected.isHidden = false
@@ -117,7 +117,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Methods to show an alert to the user to choose between camera and library
-    private func getSource(pictureAddPicture: UIImageView!) {
+    func getSource(pictureAddPicture: UIImageView!) {
         
         // Create an alert to give choice between camera and photo library
         let alert = UIAlertController(title: "Image Selection", message: "From where you want to pick this picture?", preferredStyle: .actionSheet)
@@ -132,8 +132,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         print("addPicture")
     }
     
-    //Get image from source type according method addPicture()
-    private func getImage(pictureGetImage: UIImageView!, fromSourceType sourceType: UIImagePickerController.SourceType) {
+    //Get image , method is called in getSource method with source type as parameter
+    func getImage(pictureGetImage: UIImageView!, fromSourceType sourceType: UIImagePickerController.SourceType) {
         //Check is source type available
         if UIImagePickerController.isSourceTypeAvailable(sourceType) {
             let image = UIImagePickerController()
@@ -146,7 +146,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         }
     }
     
-    //Attribute the picture to the correct UIImage
+    //Attribute the picture to the correct UIImage, is called when image is selected
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
@@ -172,8 +172,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         }
     }
     
-    // Share method
+    // Share method and create picture
     func share() {
+        // Create collage picture
         let size = self.viewImageToShare.frame.size
         UIGraphicsBeginImageContextWithOptions(size, true, 0.0)
         viewImageToShare.layer.render(in: UIGraphicsGetCurrentContext()!)
@@ -186,7 +187,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Method to show an alert (used if error occured when selecting a picture)
-    private func showAlert ( title:String, message:String) {
+    func showAlert ( title:String, message:String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -197,14 +198,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Method to hide all layout selectors
-    private func hideLayoutSelector() {
+    func hideLayoutSelector() {
         layout1selected.isHidden = true
         layout2selected.isHidden = true
         layout3selected.isHidden = true
     }
     
     // Method to hide all picture buttons
-    private func hidePictureButton() {
+    func hidePictureButton() {
         buttonPicture1.isHidden = true
         buttonPicture2.isHidden = true
         buttonPicture3.isHidden = true
@@ -214,7 +215,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Method to hide all picture
-    private func hideAllPictures() {
+    func hideAllPictures() {
         picture1.isHidden = true
         picture2.isHidden = true
         picture3.isHidden = true
