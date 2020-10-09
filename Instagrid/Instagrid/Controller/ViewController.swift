@@ -14,30 +14,30 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @IBOutlet weak var layout2selected: UIImageView!
     @IBOutlet weak var layout3selected: UIImageView!
     
-    // Plus button outlets
-    @IBOutlet weak var buttonPicture1: UIButton!
-    @IBOutlet weak var buttonPicture2: UIButton!
-    @IBOutlet weak var buttonPicture3: UIButton!
-    @IBOutlet weak var buttonPicture4: UIButton!
-    @IBOutlet weak var buttonPicture5: UIButton!
-    @IBOutlet weak var buttonPicture6: UIButton!
+    // Parameters to be equal to the outlets in CollageImageViewController
+    var buttonPicture1: UIButton!
+    var buttonPicture2: UIButton!
+    var buttonPicture3: UIButton!
+    var buttonPicture4: UIButton!
+    var buttonPicture5: UIButton!
+    var buttonPicture6: UIButton!
+    var picture1: UIImageView!
+    var picture2: UIImageView!
+    var picture3: UIImageView!
+    var picture4: UIImageView!
+    var picture5: UIImageView!
+    var picture6: UIImageView!
+    var viewImageToShare: UIView!
     
-    // Pictures outlets
-    @IBOutlet weak var picture1: UIImageView!
-    @IBOutlet weak var picture2: UIImageView!
-    @IBOutlet weak var picture3: UIImageView!
-    @IBOutlet weak var picture4: UIImageView!
-    @IBOutlet weak var picture5: UIImageView!
-    @IBOutlet weak var picture6: UIImageView!
+    // Parameter for to show the path to the CollageImageViewController
+    var vc2: CollageImageViewController!
     
-    // View to share outlet
-    @IBOutlet weak var viewImageToShare: UIView!
+
     
     // Swipe label
     @IBOutlet weak var swipeLabel: UILabel!
     
-    // Used as parameter in the imagePickerView(), is equal to parameter from getImage method
-    var picturePicker: UIImageView!
+
     
     // View did load
     override func viewDidLoad() {
@@ -52,51 +52,94 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(swipe))
         swipeUp.direction = .up
         self.view.addGestureRecognizer(swipeUp)
+        
 
     }
     
+    //Prepare for segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toCollageImage" {
+            DispatchQueue.main.async{
+                self.vc2 = segue.destination as? CollageImageViewController
+                self.buttonPicture1 = self.vc2.buttonPicture1
+                self.buttonPicture2 = self.vc2.buttonPicture2
+                self.buttonPicture3 = self.vc2.buttonPicture3
+                self.buttonPicture4 = self.vc2.buttonPicture4
+                self.buttonPicture5 = self.vc2.buttonPicture5
+                self.buttonPicture6 = self.vc2.buttonPicture6
+                self.picture1 = self.vc2.picture1
+                self.picture2 = self.vc2.picture2
+                self.picture3 = self.vc2.picture3
+                self.picture4 = self.vc2.picture4
+                self.picture5 = self.vc2.picture5
+                self.picture6 = self.vc2.picture6
+                self.viewImageToShare = self.vc2.viewImageToShare
+            }
+        }
+    }
+    
+    // Method to call the viewDidLoad of the CollageImageViewController
+    func callviewDidLoadOfCollageImageViewController() {
+        self.vc2.viewDidLoad()
+    }
+    
+    
     // Layout buttons
     @IBAction func layoutButton1(_ sender: Any) {
+        callviewDidLoadOfCollageImageViewController()
+        
         // buttonPictureD & pictureD are used as duplicated as this layout contains 3 pictures
-        activateLayout(layoutselected: layout1selected, buttonPictureA: buttonPicture3, buttonPictureB: buttonPicture4, buttonPictureC: buttonPicture5, buttonPictureD: buttonPicture5, pictureA: picture3, pictureB: picture4, pictureC: picture5, pictureD: picture5)
+        activateLayout(layoutselected: layout1selected,
+                       buttonPictureA: buttonPicture3,
+                       buttonPictureB: buttonPicture4,
+                       buttonPictureC: buttonPicture5,
+                       buttonPictureD: buttonPicture5,
+                       pictureA: picture3,
+                       pictureB: picture4,
+                       pictureC: picture5,
+                       pictureD: picture5)
     }
     
     @IBAction func layoutButton2(_ sender: Any) {
+        callviewDidLoadOfCollageImageViewController()
+        
         // buttonPictureD & pictureD are used as duplicated as this layout contains 3 pictures
-        activateLayout(layoutselected: layout2selected, buttonPictureA: buttonPicture1, buttonPictureB: buttonPicture2, buttonPictureC: buttonPicture6, buttonPictureD: buttonPicture6, pictureA: picture1, pictureB: picture2, pictureC: picture6, pictureD: picture6)
+        activateLayout(layoutselected: layout2selected,
+                       buttonPictureA: buttonPicture1,
+                       buttonPictureB: buttonPicture2,
+                       buttonPictureC: buttonPicture6,
+                       buttonPictureD: buttonPicture6,
+                       pictureA: picture1,
+                       pictureB: picture2,
+                       pictureC: picture6,
+                       pictureD: picture6)
     }
     
     @IBAction func layoutButton3(_ sender: Any) {
-        activateLayout(layoutselected: layout3selected, buttonPictureA: buttonPicture1, buttonPictureB: buttonPicture2, buttonPictureC: buttonPicture3, buttonPictureD: buttonPicture4, pictureA: picture1, pictureB: picture2, pictureC: picture3, pictureD: picture4)
+        callviewDidLoadOfCollageImageViewController()
+        
+        activateLayout(layoutselected: layout3selected,
+                       buttonPictureA: buttonPicture1,
+                       buttonPictureB: buttonPicture2,
+                       buttonPictureC: buttonPicture3,
+                       buttonPictureD: buttonPicture4,
+                       pictureA: picture1,
+                       pictureB: picture2,
+                       pictureC: picture3,
+                       pictureD: picture4)
     }
     
-    // Add pictures button
-    @IBAction func addPicture1Button(_ sender: Any) {
-        getSource(pictureAddPicture: picture1)
-    }
-    
-    @IBAction func addPicture2Button(_ sender: Any) {
-        getSource(pictureAddPicture: picture2)
-    }
-    
-    @IBAction func addPicture3Button(_ sender: Any) {
-        getSource(pictureAddPicture: picture3)
-    }
-    
-    @IBAction func addPicture4Button(_ sender: Any) {
-        getSource(pictureAddPicture: picture4)
-    }
-    
-    @IBAction func addPicture5Button(_ sender: Any) {
-        getSource(pictureAddPicture: picture5)
-    }
-    
-    @IBAction func addPicture6Button(_ sender: Any) {
-        getSource(pictureAddPicture: picture6)
-    }
     
     // Layout functions
-    func activateLayout(layoutselected: UIImageView!, buttonPictureA: UIButton!, buttonPictureB: UIButton!, buttonPictureC: UIButton!, buttonPictureD: UIButton!, pictureA: UIImageView!, pictureB: UIImageView!, pictureC: UIImageView!, pictureD: UIImageView!) {
+    func activateLayout(layoutselected: UIImageView!,
+                        buttonPictureA: UIButton!,
+                        buttonPictureB: UIButton!,
+                        buttonPictureC: UIButton!,
+                        buttonPictureD: UIButton!,
+                        pictureA: UIImageView!,
+                        pictureB: UIImageView!,
+                        pictureC: UIImageView!,
+                        pictureD: UIImageView!) {
         // Layout selector
         hideLayoutSelector()
         layoutselected.isHidden = false
@@ -116,49 +159,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         pictureD.isHidden = false
     }
     
-    // Methods to show an alert to the user to choose between camera and library
-    func getSource(pictureAddPicture: UIImageView!) {
-        
-        // Create an alert to give choice between camera and photo library
-        let alert = UIAlertController(title: "Image Selection", message: "From where you want to pick this picture?", preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: {(action: UIAlertAction) in
-            self.getImage(pictureGetImage: pictureAddPicture, fromSourceType: .camera)
-        }))
-        alert.addAction(UIAlertAction(title: "Photo Album", style: .default, handler: {(action: UIAlertAction) in
-            self.getImage(pictureGetImage: pictureAddPicture, fromSourceType: .photoLibrary)
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-        print("addPicture")
-    }
-    
-    //Get image , method is called in getSource method with source type as parameter
-    func getImage(pictureGetImage: UIImageView!, fromSourceType sourceType: UIImagePickerController.SourceType) {
-        //Check is source type available
-        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
-            let image = UIImagePickerController()
-            image.delegate = self
-            image.sourceType = sourceType
-            image.allowsEditing = true
-            picturePicker = pictureGetImage
-            self.present(image, animated: true, completion: nil)
-            print("getImage")
-        }
-    }
-    
-    //Attribute the picture to the correct UIImage, is called when image is selected
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            picturePicker.isHidden = false
-            picturePicker.image = image
-        } else {
-            showAlert(title: "Error", message: "Instagrid could not access the camera nor the photo library")
-        }
-        
-        self.dismiss(animated: true, completion: nil)
-        print("imagePickerController")
-    }
     
     // Swipe method
     @objc func swipe(gesture: UISwipeGestureRecognizer) -> Void {
@@ -174,8 +174,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     // Share method and create picture
     func share() {
+        callviewDidLoadOfCollageImageViewController()
+        
         // Create collage picture
-        let size = self.viewImageToShare.frame.size
+        let size = viewImageToShare.frame.size
         UIGraphicsBeginImageContextWithOptions(size, true, 0.0)
         viewImageToShare.layer.render(in: UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -186,16 +188,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         present(activityViewController, animated: true, completion: nil)
     }
     
-    // Method to show an alert (used if error occured when selecting a picture)
-    func showAlert ( title:String, message:String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
-        let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        
-        alert.addAction(alertAction)
-        
-        present(alert, animated: true, completion: nil)
-    }
     
     // Method to hide all layout selectors
     func hideLayoutSelector() {
@@ -206,6 +198,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     // Method to hide all picture buttons
     func hidePictureButton() {
+        callviewDidLoadOfCollageImageViewController()
+        
         buttonPicture1.isHidden = true
         buttonPicture2.isHidden = true
         buttonPicture3.isHidden = true
@@ -216,6 +210,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     // Method to hide all picture
     func hideAllPictures() {
+        callviewDidLoadOfCollageImageViewController()
+        
         picture1.isHidden = true
         picture2.isHidden = true
         picture3.isHidden = true
