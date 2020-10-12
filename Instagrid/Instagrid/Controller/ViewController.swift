@@ -32,12 +32,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Parameter for to show the path to the CollageImageViewController
     var vc2: CollageImageViewController!
     
-
-    
     // Swipe label
     @IBOutlet weak var swipeLabel: UILabel!
-    
-
     
     // View did load
     override func viewDidLoad() {
@@ -52,8 +48,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(swipe))
         swipeUp.direction = .up
         self.view.addGestureRecognizer(swipeUp)
-        
-
     }
     
     //Prepare for segue
@@ -61,19 +55,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         if segue.identifier == "toCollageImage" {
             DispatchQueue.main.async{
                 self.vc2 = segue.destination as? CollageImageViewController
-                self.buttonPicture1 = self.vc2.buttonPicture1
-                self.buttonPicture2 = self.vc2.buttonPicture2
-                self.buttonPicture3 = self.vc2.buttonPicture3
-                self.buttonPicture4 = self.vc2.buttonPicture4
-                self.buttonPicture5 = self.vc2.buttonPicture5
-                self.buttonPicture6 = self.vc2.buttonPicture6
-                self.picture1 = self.vc2.picture1
-                self.picture2 = self.vc2.picture2
-                self.picture3 = self.vc2.picture3
-                self.picture4 = self.vc2.picture4
-                self.picture5 = self.vc2.picture5
-                self.picture6 = self.vc2.picture6
-                self.viewImageToShare = self.vc2.viewImageToShare
+                self.attributeParamatersForSegue()
             }
         }
     }
@@ -145,20 +127,41 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         layoutselected.isHidden = false
         
         // Add pictures button
-        hidePictureButton()
-        buttonPictureA.isHidden = false
-        buttonPictureB.isHidden = false
-        buttonPictureC.isHidden = false
-        buttonPictureD.isHidden = false
+        activateButtons(buttonPictureOne: buttonPictureA,
+                        buttonPictureTwo: buttonPictureB,
+                        buttonPictureThree: buttonPictureC,
+                        buttonPictureFour: buttonPictureD)
         
         // Show only pictures from this specific layout
-        hideAllPictures()
-        pictureA.isHidden = false
-        pictureB.isHidden = false
-        pictureC.isHidden = false
-        pictureD.isHidden = false
+        activatePictures(pictureOne: pictureA,
+                         pictureTwo: pictureB,
+                         pictureThree: pictureC,
+                         pictureFour: pictureD)
     }
     
+    // Hide all + buttons except the four ones in parameters
+    func activateButtons(buttonPictureOne: UIButton!,
+                         buttonPictureTwo: UIButton!,
+                         buttonPictureThree: UIButton!,
+                         buttonPictureFour: UIButton!) {
+        hidePictureButton()
+        buttonPictureOne.isHidden = false
+        buttonPictureTwo.isHidden = false
+        buttonPictureThree.isHidden = false
+        buttonPictureFour.isHidden = false
+    }
+    
+    // Hide all images except the four ones in parameters
+    func activatePictures(pictureOne: UIImageView!,
+                          pictureTwo: UIImageView!,
+                          pictureThree: UIImageView!,
+                          pictureFour: UIImageView!) {
+        hideAllPictures()
+        pictureOne.isHidden = false
+        pictureTwo.isHidden = false
+        pictureThree.isHidden = false
+        pictureFour.isHidden = false
+    }
     
     // Swipe method
     @objc func swipe(gesture: UISwipeGestureRecognizer) -> Void {
@@ -187,7 +190,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         let activityViewController = UIActivityViewController(activityItems: [image!], applicationActivities: nil)
         present(activityViewController, animated: true, completion: nil)
     }
-    
     
     // Method to hide all layout selectors
     func hideLayoutSelector() {
@@ -218,6 +220,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         picture4.isHidden = true
         picture5.isHidden = true
         picture6.isHidden = true
+    }
+    
+    // Method to attribute the parameters of ViewController to the parameters of CollageImageViewController thru the segue
+    func attributeParamatersForSegue(){
+        self.buttonPicture1 = self.vc2.buttonPicture1
+        self.buttonPicture2 = self.vc2.buttonPicture2
+        self.buttonPicture3 = self.vc2.buttonPicture3
+        self.buttonPicture4 = self.vc2.buttonPicture4
+        self.buttonPicture5 = self.vc2.buttonPicture5
+        self.buttonPicture6 = self.vc2.buttonPicture6
+        self.picture1 = self.vc2.picture1
+        self.picture2 = self.vc2.picture2
+        self.picture3 = self.vc2.picture3
+        self.picture4 = self.vc2.picture4
+        self.picture5 = self.vc2.picture5
+        self.picture6 = self.vc2.picture6
+        self.viewImageToShare = self.vc2.viewImageToShare
     }
     
     // Change swip label according phone orientation
